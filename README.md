@@ -2,7 +2,7 @@
 
 Assorted Raspberry Pi Configuration Files
 
-##VNC Configuration
+## vnc/ - VNC Configuration
 
 Assorted VNC scripts.
 
