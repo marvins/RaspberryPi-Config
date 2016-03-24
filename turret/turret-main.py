@@ -42,7 +42,7 @@ def Main():
                 elif event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_LEFT:
-                        pwm_driver.Turn(20)
+                        pwm_driver.Turn(-20)
 
                     elif event.key == pygame.K_RIGHT:
                         pwm_driver.Turn(20)

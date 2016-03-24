@@ -16,9 +16,6 @@ class Turret:
         print('I2C: ' + str(i2c_address))
         self.pwm = PWM(i2c_address)
 
-        servoMin = 150  # Min pulse length out of 4096
-        servoMax = 600  # Max pulse length out of 4096
-
         self.pwm.setPWM(self.channel, 0, self.pulse)
 
 
