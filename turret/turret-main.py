@@ -26,7 +26,7 @@ def Main():
 
         #  Initialize Pygame
         pygame.init()
-        screen = pygame.display.set_mode ()
+        screen = pygame.display.set_mode ((320,240))
         index = 0
 
         while True:
@@ -42,10 +42,11 @@ def Main():
                 elif event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_LEFT:
-                        print "You pressed left key."
+                        pwm_driver.Turn(20)
 
                     elif event.key == pygame.K_RIGHT:
-                        print "You pressed right key."
+                        pwm_driver.Turn(20)
+
                 index += 1
 
 

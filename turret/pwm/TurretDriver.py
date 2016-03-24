@@ -21,11 +21,11 @@ class Turret:
 
         self.pwm.setPWM(self.channel, 0, self.pulse)
 
-        self.pwm.setPWMFreq(60)                        # Set frequency to 60 Hz
-        self.pwm.setPWM(0, 0, servoMin)
-        time.sleep(1)
-        self.pwm.setPWM(0, 0, servoMax)
-        time.sleep(1)
+
+    def Turn(self, value):
+
+        self.pulse += value
+        self.pwm.setPWM(0, 0, self.pulse)
 
     def setServoPulse(self, channel, pulse):
         self.pulseLength = 1000000                   # 1,000,000 us per second
