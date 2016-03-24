@@ -21,7 +21,7 @@ def Main():
 
         #  Initialize Pygame
         pygame.init()
-        screen = pygame.display.set_mode ( ( 320 , 240 ) )
+        #screen = pygame.display.set_mode ( ( 320 , 240 ) )
         index = 0
 
         while True:
