@@ -6,6 +6,9 @@ import time
 
 class Turret:
 
+    channel = 0
+    pulse = 500
+
     def __init__(self, options):
 
         #  Set the PWM Driver
