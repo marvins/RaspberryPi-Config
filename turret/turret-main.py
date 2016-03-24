@@ -2,6 +2,8 @@
 
 #  Turret Libraries
 from core.Options import Options
+from pwm.TurretDriver import Turret
+
 
 #  Python Libraries
 import pygame, sys
@@ -16,6 +18,9 @@ def Main():
     #  Parse Command-Line Options
     options = Options()
 
+    #  Initialize the Turret Driver
+    pwm_driver = Turret(options)
+
     # Check if Using Keyboard
     if options.cmd_options.keyboard_control is True:
 
@@ -27,19 +32,21 @@ def Main():
         while True:
 
             for event in pygame.event.get():
+
+                #  Check if User wants to Exit Game
                 if event.type == pygame.QUIT:
                     print('Exiting Application')
                     sys.exit()
-                elif event.type == pygame.K_LEFT:
-                    print "{0}: You pressed {1:c}".format ( index , event.key )
-                elif event.type == pygame.KEYUP:
-                    print "{0}: You released {1:c}".format ( index , event.key )
-                index += 1
 
-                if event.key == pygame.K_LEFT:
-                    print('Left Key')
-                elif event.key == pygame.K_RIGHT:
-                    print('Right Key')
+                #  Keyboard Down
+                elif event.type == pygame.KEYDOWN:
+
+                    if event.key == pygame.K_LEFT:
+                        print "You pressed left key."
+
+                    elif event.key == pygame.K_RIGHT:
+                        print "You pressed right key."
+                index += 1
 
 
 if __name__ == '__main__':
