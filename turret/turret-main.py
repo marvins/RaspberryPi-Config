@@ -47,6 +47,11 @@ def Main():
                     elif event.key == pygame.K_RIGHT:
                         pwm_driver.Turn(20)
 
+                    elif event.key == pygame.K_UP:
+                        pwm_driver.Pitch(20)
+                    elif event.key == pygame.K_DOWN:
+                        pwm_driver.Pitch(-20)
+
                 index += 1
 
 

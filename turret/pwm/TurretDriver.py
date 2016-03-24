@@ -12,6 +12,11 @@ class Turret:
     min_pulse = 150
     max_pulse = 650
 
+    y_pulse = 500
+
+    min_y_pulse = 150
+    max_y_pulse = 650
+
     def __init__(self, options):
 
         #  Set the PWM Driver
@@ -28,6 +33,14 @@ class Turret:
         self.pulse = max( self.pulse, self.min_pulse)
 
         self.pwm.setPWM(0, 0, self.pulse)
+
+    def Pitch(self, value):
+
+        self.y_pulse += value
+        self.y_pulse = min(self.y_pulse, self.max_y_pulse)
+        self.y_pulse = max(self.y_pulse, self.min_y_pulse)
+
+        self.pwm.setPWM(1, 0, self.y_pulse)
 
     def setServoPulse(self, channel, pulse):
         self.pulseLength = 1000000                   # 1,000,000 us per second
