@@ -21,7 +21,7 @@ def Main():
 
         #  Initialize Pygame
         pygame.init()
-        #screen = pygame.display.set_mode ( ( 320 , 240 ) )
+        screen = pygame.display.set_mode ()
         index = 0
 
         while True:
@@ -30,12 +30,16 @@ def Main():
                 if event.type == pygame.QUIT:
                     print('Exiting Application')
                     sys.exit()
-                elif event.type == pygame.KEYDOWN:
+                elif event.type == pygame.K_LEFT:
                     print "{0}: You pressed {1:c}".format ( index , event.key )
                 elif event.type == pygame.KEYUP:
                     print "{0}: You released {1:c}".format ( index , event.key )
                 index += 1
 
+                if event.key == pygame.K_LEFT:
+                    print('Left Key')
+                elif event.key == pygame.K_RIGHT:
+                    print('Right Key')
 
 
 if __name__ == '__main__':
