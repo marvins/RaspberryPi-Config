@@ -9,11 +9,13 @@ class Turret:
     channel = 0
     pulse = 500
 
+    min_pulse = 150
+    max_pulse = 650
+
     def __init__(self, options):
 
         #  Set the PWM Driver
         i2c_address = int(options.cfg_options.get('turret','i2c_address'), 16)
-        print('I2C: ' + str(i2c_address))
         self.pwm = PWM(i2c_address)
 
         self.pwm.setPWM(self.channel, 0, self.pulse)
@@ -22,6 +24,9 @@ class Turret:
     def Turn(self, value):
 
         self.pulse += value
+        self.pulse = min( self.pulse, self.max_pulse)
+        self.pulse = max( self.pulse, self.min_pulse)
+
         self.pwm.setPWM(0, 0, self.pulse)
 
     def setServoPulse(self, channel, pulse):
