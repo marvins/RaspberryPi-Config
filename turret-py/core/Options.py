@@ -1,11 +1,14 @@
 
 #  Python Libraries
-import argparse, ConfigParser
+import argparse, ConfigParser, logging
 
 
 class Options:
 
+    #  Command-Line Options
     cmd_options = None
+
+    #  Configuration File Options
     cfg_options = None
 
     def __init__(self):
@@ -15,6 +18,9 @@ class Options:
 
         #  Parse Config-File
         self.cfg_options = self.Parse_Config_File()
+
+        #  Logging Init
+        logging.basicConfig( level=logging.INFO )
 
 
     def Parse_Command_Line(self):

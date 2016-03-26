@@ -28,8 +28,9 @@ def Main():
         pygame.init()
         screen = pygame.display.set_mode ((320,240))
         index = 0
+        exit_loop = False
 
-        while True:
+        while exit_loop is False:
 
             for event in pygame.event.get():
 
@@ -42,15 +43,22 @@ def Main():
                 elif event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_LEFT:
-                        pwm_driver.Turn(-20)
+                        pwm_driver.Rotate_X(-20)
 
                     elif event.key == pygame.K_RIGHT:
-                        pwm_driver.Turn(20)
+                        pwm_driver.Rotate_X(20)
 
+                    #  Check the Up Buttom
                     elif event.key == pygame.K_UP:
-                        pwm_driver.Pitch(20)
+                        pwm_driver.Rotate_Y(20)
+
+                    #  Check the Down Button
                     elif event.key == pygame.K_DOWN:
-                        pwm_driver.Pitch(-20)
+                        pwm_driver.Rotate_Y(-20)
+
+                    #  Check the Escape Button
+                    elif event.key == pygame.K_ESCAPE:
+                        exit_loop = True
 
                 index += 1
 
