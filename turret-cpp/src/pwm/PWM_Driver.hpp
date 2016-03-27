@@ -55,8 +55,8 @@ class PWM_I2C_Driver
         /**
          * @brief Constructor
         */
-        PWM_I2C_Driver( const int& dev_id,
-                        const int& channel_id );
+        PWM_I2C_Driver( const int& dev_id );
+        
         
         /**
          * @brief Initialize the PWM Driver
@@ -82,9 +82,6 @@ class PWM_I2C_Driver
         
         /// Device ID
         int m_device_id;
-
-        /// Channel ID
-        int m_channel_id;
 
         /// Servo Device ID
         int m_servo_fd;

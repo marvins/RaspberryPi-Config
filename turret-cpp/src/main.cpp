@@ -31,6 +31,10 @@ int main( int argc, char* argv[] )
     // Initialize the controller
     turret_controller.Initialize();
 
+    // Rotate Upwards
+    for( int i=0; i<100 ){
+        turret_controller.Rotate_Y( 1 );
+    }
 
     return 0;
 }

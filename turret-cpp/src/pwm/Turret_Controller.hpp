@@ -80,17 +80,30 @@ class Turret_Controller
         */
         void Initialize();
 
+        
+        /**
+         * @brief Rotate Along X Axis
+        */
+        void Rotate_X( const int& value );
+
+
+        /**
+         * @brief Rotate Along Y Axis
+        */
+        void Rotate_Y( const int& value );
+
 
     private:
         
         /// Configuration
         Turret_Config m_config;
 
-        /// X Servo
-        PWM_I2C_Driver::ptr_t m_x_servo_driver;
+        /// Servo Driver
+        PWM_I2C_Driver::ptr_t m_servo_driver;
 
-        /// Y Servo
-        PWM_I2C_Driver::ptr_t m_y_servo_driver;
+        /// Current Values
+        int m_current_x_value;
+        int m_current_y_value;
 
 }; // End of Turret_Controller Class
 

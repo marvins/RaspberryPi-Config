@@ -43,19 +43,56 @@ void Turret_Controller::Initialize()
     BOOST_LOG_TRIVIAL(debug) << "Initializing Turret-Controller";
 
     // Create the PWM Driver
-    m_x_servo_driver = std::make_shared<PWM_I2C_Driver>( 0x40, 1);
-    m_y_servo_driver = std::make_shared<PWM_I2C_Driver>( 0x40, 0);
+    m_servo_driver = std::make_shared<PWM_I2C_Driver>( 0x40 );
 
-    if( !m_x_servo_driver->Initialize() )
+    if( !m_servo_driver->Initialize() )
     {
         std::exit(-1);
     }
-    if( !m_y_servo_driver->Initialize() )
-    {
-        std::exit(-1);
-    }
+
+    // Initialize the Starting Values
+    m_current_x_value = 500;
+    m_current_y_value = 500;
+
+    // Set the Values
+    Rotate_X(0);
+    Rotate_Y(0);
 }
 
+
+/**********************************/
+/*          Rotate X Axis         */
+/**********************************/
+void Turret_Controller::Rotate_X( const int& value )
+{
+    // Set the values
+    m_current_x_value = std::min( 800, m_current_x_value + value );
+    m_current_x_value = std::max(   0, m_current_x_value + value );
+
+    // Move
+    m_servo_driver->Set_PWM( m_config.Get_X_Servo_Channel(),
+                             0, 
+                             m_current_x_value );
+                                    
+}
+
+
+/**********************************/
+/*          Rotate Y Axis         */
+/**********************************/
+void Turret_Controller::Rotate_Y( const int& value )
+{
+
+    // Set the values
+    m_current_y_value = std::min( 800, m_current_y_value + value );
+    m_current_y_value = std::max(   0, m_current_y_value + value );
+
+    // Move
+    m_servo_driver->Set_PWM( m_config.Get_Y_Servo_Channel(),
+                             0, 
+                             m_current_y_value );
+
+}
 
 } // End of PiDef Namespace
 

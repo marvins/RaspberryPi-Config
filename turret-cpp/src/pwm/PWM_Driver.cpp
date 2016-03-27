@@ -22,10 +22,8 @@ namespace PiDef{
 /**********************************/
 /*          Constructor           */
 /**********************************/
-PWM_I2C_Driver::PWM_I2C_Driver( const int& dev_id,
-                                const int& channel_id )
- : m_device_id(dev_id),
-   m_channel_id(channel_id)
+PWM_I2C_Driver::PWM_I2C_Driver( const int& dev_id )
+ : m_device_id(dev_id)
 {
     // Configure I2C
     if( ( m_servo_fd = Initialize_I2C( 0x40 ) ) < 0 ){
@@ -73,7 +71,7 @@ void PWM_I2C_Driver::Set_PWM( const int& channel,
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__LED0_ON_L+4*channel, on & 0xFF );
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__LED0_ON_H+4*channel, on >> 8);
 
-    wiringPiI2CWriteReg8( m_servo_fd, PWM::__LED0_OFF_L+4*channel, off & 0xFF)
+    wiringPiI2CWriteReg8( m_servo_fd, PWM::__LED0_OFF_L+4*channel, off & 0xFF);
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__LED0_OFF_H+4*channel, off >> 8);
 }
 
