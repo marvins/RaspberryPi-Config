@@ -19,6 +19,7 @@
 */
 int main( int argc, char* argv[] )
 {
+    wiringPiSetupGPIO();
 
     // Parse Options
     PiDef::Options options( argc, argv );
@@ -32,8 +33,10 @@ int main( int argc, char* argv[] )
     turret_controller.Initialize();
 
     // Rotate Upwards
-    for( int i=0; i<100 ){
+    for( int i=0; i<100; i++ ){
         turret_controller.Rotate_Y( 1 );
+        BOOST_LOG_TRIVIAL(info) << "Rotating";
+        sleep(1);
     }
 
     return 0;

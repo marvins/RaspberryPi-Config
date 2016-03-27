@@ -23,6 +23,13 @@ class Turret:
 
     def __init__(self, options):
 
+        self.x_pulse = 350
+        self.y_pulse = 350
+        self.min_x_pulse = 150
+        self.max_x_pulse = 650
+        self.min_y_pulse = 150
+        self.max_y_pulse = 650
+
         #  Set the PWM Driver
         self.i2c_address = int(options.cfg_options.get('turret','i2c_address'), 16)
         self.x_channel   = int(options.cfg_options.get('turret','x_servo_device'), 16)
@@ -44,7 +51,8 @@ class Turret:
         self.x_pulse += value
         self.x_pulse = min( self.x_pulse, self.max_x_pulse)
         self.x_pulse = max( self.x_pulse, self.min_x_pulse)
-
+        
+        logging.debug('Rotating X Servo to ' + str(self.x_pulse))
         self.pwm.setPWM(self.x_channel, 0, self.x_pulse)
 
     def Rotate_Y(self, value):
@@ -53,6 +61,7 @@ class Turret:
         self.y_pulse = min(self.y_pulse, self.max_y_pulse)
         self.y_pulse = max(self.y_pulse, self.min_y_pulse)
 
+        logging.debug('Rotating Y Servo to ' + str(self.y_pulse))
         self.pwm.setPWM(self.y_channel, 0, self.y_pulse)
 
 

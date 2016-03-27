@@ -43,18 +43,22 @@ def Main():
                 elif event.type == pygame.KEYDOWN:
 
                     if event.key == pygame.K_LEFT:
-                        pwm_driver.Rotate_X(-20)
+                        print('Detected Left Arrow Key')
+                        pwm_driver.Rotate_X(-5)
 
                     elif event.key == pygame.K_RIGHT:
-                        pwm_driver.Rotate_X(20)
+                        print('Detected Right Arrow Key')
+                        pwm_driver.Rotate_X(5)
 
                     #  Check the Up Buttom
                     elif event.key == pygame.K_UP:
-                        pwm_driver.Rotate_Y(20)
+                        print('Detected Up Arrow Key')
+                        pwm_driver.Rotate_Y(5)
 
                     #  Check the Down Button
                     elif event.key == pygame.K_DOWN:
-                        pwm_driver.Rotate_Y(-20)
+                        print('Detected Down Arrow Key')
+                        pwm_driver.Rotate_Y(-5)
 
                     #  Check the Escape Button
                     elif event.key == pygame.K_ESCAPE:
