@@ -60,12 +60,18 @@ configure_file( "${PROJECT_SOURCE_DIR}/src/PiDefender.hpp.in"
 set( PI_DEFENDER_SOURCES 
      src/main.cpp
      src/PiDefender.hpp
+     src/calibration/Calibration_Mode.cpp
+     src/calibration/Calibration_Mode.hpp
+     src/core/Enumerations.cpp
+     src/core/Enumerations.hpp
      src/core/GPIO_Utilities.cpp
      src/core/GPIO_Utilities.hpp
      src/core/Log_Utilities.cpp
      src/core/Log_Utilities.hpp
      src/core/Options.cpp
      src/core/Options.hpp
+     src/core/String_Utilities.cpp
+     src/core/String_Utilities.hpp
      src/pwm/PWM_Driver.cpp
      src/pwm/PWM_Driver.hpp
      src/pwm/Turret_Controller.cpp
@@ -86,5 +92,6 @@ target_link_libraries( pi-defender
                        ${WIRINGPI_LIBRARY}
                        ${Boost_LIBRARIES}
                        pthread
+                       ncurses
 )
 

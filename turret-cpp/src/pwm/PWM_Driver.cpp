@@ -47,6 +47,10 @@ bool PWM_I2C_Driver::Initialize()
 {
 
 #if PIDEF_USE_WIRINGPI == 1
+
+    // Initialize PWM Servos
+    Set_All_PWM( 0, 0);
+
     // Set the drivers
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__MODE2, PWM::__OUTDRV );
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__MODE1, PWM::__ALLCALL );
@@ -64,7 +68,8 @@ bool PWM_I2C_Driver::Initialize()
 #else
     throw std::runtime_error("Trying to initialize without WiringPI Support.");
 #endif
-
+    
+    return true;
 }
 
 
@@ -95,6 +100,10 @@ void PWM_I2C_Driver::Set_All_PWM( const int& off,
                                   const int& on )
 {
 
+    wiringPiI2CWriteReg8( m_servo_fd, PWM::__ALL_LED_ON_L, on & 0xFF);
+    wiringPiI2CWriteReg8( m_servo_fd, PWM::__ALL_LED_ON_H, on >> 8);
+    wiringPiI2CWriteReg8( m_servo_fd, PWM::__ALL_LED_OFF_L, off & 0xFF);
+    wiringPiI2CWriteReg8( m_servo_fd, PWM::__ALL_LED_OFF_H, off >> 8);
 
 }
 /*
@@ -124,11 +133,7 @@ void PWM_I2C_Driver::Set_All_PWM( const int& off,
 
   def setAllPWM(self, on, off):
     "Sets a all PWM channels"
-    self.i2c.write8(self.__ALL_LED_ON_L, on & 0xFF)
-    self.i2c.write8(self.__ALL_LED_ON_H, on >> 8)
-    self.i2c.write8(self.__ALL_LED_OFF_L, off & 0xFF)
-    self.i2c.write8(self.__ALL_LED_OFF_H, off >> 8)
-*/
+    */
 
 } // End of PiDef Namespace
 

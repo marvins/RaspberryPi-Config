@@ -18,10 +18,22 @@ namespace PiDef{
 /********************************/
 Turret_Config::Turret_Config( const int& i2c_device_id,
                               const int& x_servo_channel,
-                              const int& y_servo_channel )
+                              const int& y_servo_channel,
+                              const int& x_servo_start,
+                              const int& y_servo_start,
+                              const int& x_servo_min,
+                              const int& x_servo_max,
+                              const int& y_servo_min,
+                              const int& y_servo_max )
  : m_i2c_device_id(m_i2c_device_id),
    m_x_servo_channel(x_servo_channel),
-   m_y_servo_channel(y_servo_channel)
+   m_y_servo_channel(y_servo_channel),
+   m_x_servo_start(x_servo_start),
+   m_y_servo_start(y_servo_start),
+   m_x_servo_min(x_servo_min),
+   m_x_servo_max(x_servo_max),
+   m_y_servo_min(y_servo_min),
+   m_y_servo_max(y_servo_max)
 {
 }
 
@@ -32,6 +44,10 @@ Turret_Config::Turret_Config( const int& i2c_device_id,
 Turret_Controller::Turret_Controller( const Turret_Config& config )
  : m_config(config)
 {
+    m_servo_x_min = config.Get_X_Servo_Min();
+    m_servo_x_max = config.Get_X_Servo_Max();
+    m_servo_y_min = config.Get_Y_Servo_Min();
+    m_servo_y_max = config.Get_Y_Servo_Max();
 }
 
 /************************************************/
@@ -47,12 +63,13 @@ void Turret_Controller::Initialize()
 
     if( !m_servo_driver->Initialize() )
     {
+        BOOST_LOG_TRIVIAL(fatal) << "Failed to Initialize PWM Module.";
         std::exit(-1);
     }
 
     // Initialize the Starting Values
-    m_current_x_value = 500;
-    m_current_y_value = 500;
+    m_current_x_value = m_config.Get_X_Servo_Start();
+    m_current_y_value = m_config.Get_Y_Servo_Start();
 
     // Set the Values
     Rotate_X(0);
@@ -66,8 +83,8 @@ void Turret_Controller::Initialize()
 void Turret_Controller::Rotate_X( const int& value )
 {
     // Set the values
-    m_current_x_value = std::min( 800, m_current_x_value + value );
-    m_current_x_value = std::max(   0, m_current_x_value + value );
+    m_current_x_value = std::min( m_servo_x_max, m_current_x_value + value );
+    m_current_x_value = std::max( m_servo_x_min, m_current_x_value + value );
 
     // Move
     m_servo_driver->Set_PWM( m_config.Get_X_Servo_Channel(),
@@ -84,8 +101,8 @@ void Turret_Controller::Rotate_Y( const int& value )
 {
 
     // Set the values
-    m_current_y_value = std::min( 800, m_current_y_value + value );
-    m_current_y_value = std::max(   0, m_current_y_value + value );
+    m_current_y_value = std::min( m_servo_y_max, m_current_y_value + value );
+    m_current_y_value = std::max( m_servo_y_min, m_current_y_value + value );
 
     // Move
     m_servo_driver->Set_PWM( m_config.Get_Y_Servo_Channel(),

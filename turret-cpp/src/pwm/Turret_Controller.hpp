@@ -19,12 +19,22 @@ class Turret_Config
 {
     public:
         
+        /// Pointer Type
+        typedef std::shared_ptr<Turret_Config> ptr_t;
+
+
         /**
          * @brief Constructor
         */
         Turret_Config( const int& i2c_device_id,
                        const int& x_servo_channel,
-                       const int& y_servo_channel );
+                       const int& y_servo_channel,
+                       const int& x_servo_start,
+                       const int& y_servo_start,
+                       const int& x_servo_min,
+                       const int& x_servo_max,
+                       const int& y_servo_min,
+                       const int& y_servo_max );
 
         /**
          * @brief Get the I2C Device ID
@@ -39,13 +49,36 @@ class Turret_Config
         inline int Get_X_Servo_Channel()const{
             return m_x_servo_channel;
         }
+        
+        inline int Get_X_Servo_Start()const{
+            return m_x_servo_start;
+        }
 
+        inline int Get_Y_Servo_Start()const{
+            return m_y_servo_start;
+        }
 
         /**
          * @brief Get the Y Servo Channel
         */
         inline int Get_Y_Servo_Channel()const{
             return m_y_servo_channel;
+        }
+        
+        inline int Get_X_Servo_Min()const{
+            return m_x_servo_min;
+        }
+        
+        inline int Get_X_Servo_Max()const{
+            return m_x_servo_max;
+        }
+        
+        inline int Get_Y_Servo_Min()const{
+            return m_y_servo_min;
+        }
+        
+        inline int Get_Y_Servo_Max()const{
+            return m_y_servo_max;
         }
 
     private:
@@ -58,6 +91,15 @@ class Turret_Config
 
         /// Y Servo_Channel
         int m_y_servo_channel;
+
+        /// Start Values
+        int m_x_servo_start;
+        int m_y_servo_start;
+
+        int m_x_servo_min;
+        int m_x_servo_max;
+        int m_y_servo_min;
+        int m_y_servo_max;
 
 }; // End of Turret_Config Class
 
@@ -91,6 +133,48 @@ class Turret_Controller
          * @brief Rotate Along Y Axis
         */
         void Rotate_Y( const int& value );
+        
+        
+        /**
+         * @brief Get the Current X Value
+        */
+        inline int Get_Current_X()const{
+            return m_current_x_value;
+        }
+
+
+        /**
+         * @brief Get hte Current Y Value
+        */
+        inline int Get_Current_Y()const{
+            return m_current_y_value;
+        }
+
+
+        /**
+         * @brief Get the Servo Ranges
+        */
+        inline int Get_Servo_X_Min()const{
+            return m_servo_x_min;
+        }
+
+
+        inline int Get_Servo_X_Max()const{
+            return m_servo_x_max;
+        }
+
+
+        /**
+         * @brief Get the Servo Ranges
+        */
+        inline int Get_Servo_Y_Min()const{
+            return m_servo_y_min;
+        }
+
+
+        inline int Get_Servo_Y_Max()const{
+            return m_servo_y_max;
+        }
 
 
     private:
@@ -104,6 +188,12 @@ class Turret_Controller
         /// Current Values
         int m_current_x_value;
         int m_current_y_value;
+
+        /// Servo Ranges
+        int m_servo_x_min;
+        int m_servo_x_max;
+        int m_servo_y_min;
+        int m_servo_y_max;
 
 }; // End of Turret_Controller Class
 

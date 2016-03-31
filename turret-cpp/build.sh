@@ -6,6 +6,9 @@ BUILD_TYPE='release'
 #  Number of Build Threads
 NUM_THREADS=1
 
+#  Arguments to PiDefender
+PIDEF_ARGS=""
+
 #------------------------------------#
 #-     Print Usage Instructions     -#
 #------------------------------------#
@@ -17,7 +20,10 @@ usage()
     echo "-c | --clean : Clean software builds."
     echo '-r | --run   : Run Software.'
     echo ''
-    echo '--skip-wiringpi'
+    echo '--cal           : Run in Calibration Mode.'
+    echo '--skip-wiringpi : Build without WiringPi Support.'
+    echo ''
+
 }
 
 
@@ -73,7 +79,7 @@ run_software()
     echo "Running Software. Build Type: ${BUILD_TYPE}"
     
     #  Create CMD
-    CMD="${BUILD_TYPE}/pi-defender"
+    CMD="${BUILD_TYPE}/pi-defender ${PIDEF_ARGS}"
 
     # Run Command
     $CMD
@@ -119,6 +125,11 @@ for ARG in "$@"; do
         #  Skip Wiring Pi
         '--skip-wiringpi')
             CMAKE_ARGS="$CMAKE_ARGS -DUSE_WIRINGPI=OFF"
+            ;;
+        
+        #  Run Calibration
+        '--cal')
+            PIDEF_ARGS="--cal"
             ;;
 
         #  Number of Threads
