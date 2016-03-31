@@ -6,6 +6,7 @@
 #include "PWM_Driver.hpp"
 
 // PiDef Libraries
+#include "../PiDefender.hpp"
 #include "../core/GPIO_Utilities.hpp"
 #include "../core/Log_Utilities.hpp"
 
@@ -13,7 +14,9 @@
 #include <unistd.h>
 
 // WiringPi Libraries
+#if PIDEF_USE_WIRINGPI == 1
 #include <wiringPiI2C.h>
+#endif
 
 
 namespace PiDef{
@@ -42,6 +45,8 @@ PWM_I2C_Driver::PWM_I2C_Driver( const int& dev_id )
 /*************************************/
 bool PWM_I2C_Driver::Initialize()
 {
+
+#if PIDEF_USE_WIRINGPI == 1
     // Set the drivers
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__MODE2, PWM::__OUTDRV );
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__MODE1, PWM::__ALLCALL );
@@ -56,6 +61,9 @@ bool PWM_I2C_Driver::Initialize()
     mode1 &= PWM::__SLEEP;
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__MODE1, mode1 );
     usleep( 0.005 );
+#else
+    throw std::runtime_error("Trying to initialize without WiringPI Support.");
+#endif
 
 }
 
@@ -67,12 +75,17 @@ void PWM_I2C_Driver::Set_PWM( const int& channel,
                               const int& on,
                               const int& off )
 {
-
+#if PIDEF_USE_WIRINGPI == 1
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__LED0_ON_L+4*channel, on & 0xFF );
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__LED0_ON_H+4*channel, on >> 8);
 
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__LED0_OFF_L+4*channel, off & 0xFF);
     wiringPiI2CWriteReg8( m_servo_fd, PWM::__LED0_OFF_H+4*channel, off >> 8);
+
+#else
+    throw std::runtime_error("Trying to initialize without WiringPI Support.");
+#endif
+
 }
 
 /****************************/

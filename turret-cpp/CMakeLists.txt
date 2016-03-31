@@ -17,6 +17,23 @@ project( Pi-Defender)
 
 set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11" )
 
+
+#------------------------------#
+#-     Application Flags      -#
+#------------------------------#
+option( USE_WIRINGPI "Use WiringPi for I2C Servo Control" ON )
+
+
+#-------------------------#
+#-     Find WiringPi     -#
+#-------------------------#
+set(PIDEF_USE_WIRINGPI 0)
+if( USE_WIRINGPI )
+
+    set(WIRINGPI_LIBRARY wiringPi)
+    set(PIDEF_USE_WIRINGPI 1)
+endif()
+
 #-------------------------------#
 #-     Find Boost Libraries    -#
 #-------------------------------#
@@ -29,11 +46,20 @@ find_package( Boost REQUIRED
                     thread )
 include_directories( ${Boost_INCLUDE_DIRS} )
 
+
+#-------------------------------------#
+#-   Create the Configuration File   -#
+#-------------------------------------#
+configure_file( "${PROJECT_SOURCE_DIR}/src/PiDefender.hpp.in"
+                "${PROJECT_SOURCE_DIR}/src/PiDefender.hpp" )
+
+
 #-----------------------------------#
 #-     Define our Source Files     -#
 #-----------------------------------#
 set( PI_DEFENDER_SOURCES 
      src/main.cpp
+     src/PiDefender.hpp
      src/core/GPIO_Utilities.cpp
      src/core/GPIO_Utilities.hpp
      src/core/Log_Utilities.cpp
@@ -57,6 +83,8 @@ add_executable( pi-defender
 #-   Link Libraries    -#
 #-----------------------#
 target_link_libraries( pi-defender
-                       wiringPi
-                       ${Boost_LIBRARIES} )
+                       ${WIRINGPI_LIBRARY}
+                       ${Boost_LIBRARIES}
+                       pthread
+)
 

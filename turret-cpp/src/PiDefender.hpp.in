@@ -1,0 +1,12 @@
+/**
+ * @file    PiDefender.hpp
+ * @author  Marvin Smith
+ * @date    3/30/2016
+ */
+#ifndef __PIDEF_PIDEFENDER_HPP__
+#define __PIDEF_PIDEFENDER_HPP__
+
+/// Configuration State for if we are using WiringPi or not.
+#define PIDEF_USE_WIRINGPI @PIDEF_USE_WIRINGPI@
+
+#endif

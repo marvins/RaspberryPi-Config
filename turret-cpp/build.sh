@@ -16,6 +16,8 @@ usage()
     echo "-m | --make  : Build Software"
     echo "-c | --clean : Clean software builds."
     echo '-r | --run   : Run Software.'
+    echo ''
+    echo '--skip-wiringpi'
 }
 
 
@@ -33,7 +35,7 @@ build_software()
     pushd ${BUILD_TYPE}
 
     #  Run CMake
-    cmake .. 
+    cmake ${CMAKE_ARGS} .. 
     if [ ! "$?" = '0' ]; then
         echo 'error with CMake. Aborting.'
         exit 1
@@ -112,6 +114,11 @@ for ARG in "$@"; do
         #  Run Software
         '-r'|'--run')
             RUN_BIN=1
+            ;;
+
+        #  Skip Wiring Pi
+        '--skip-wiringpi')
+            CMAKE_ARGS="$CMAKE_ARGS -DUSE_WIRINGPI=OFF"
             ;;
 
         #  Number of Threads

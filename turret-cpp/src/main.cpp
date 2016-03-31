@@ -19,7 +19,6 @@
 */
 int main( int argc, char* argv[] )
 {
-    wiringPiSetupGPIO();
 
     // Parse Options
     PiDef::Options options( argc, argv );
