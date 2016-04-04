@@ -44,6 +44,9 @@ Options::Options( int argc, char* argv[] )
                                                        std::stoi(m_config_file_data["PWM_Y_SERVO_MIN"]),
                                                        std::stoi(m_config_file_data["PWM_Y_SERVO_MAX"]) );
 
+    // Target-Config
+    m_target_config = std::make_shared<Target_Config>( m_config_file_data["TARGET_HAAR_PAATHNAME"] );
+
 }
 
 

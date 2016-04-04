@@ -13,6 +13,7 @@
 #include "core/Log_Utilities.hpp"
 #include "core/Options.hpp"
 #include "pwm/Turret_Controller.hpp"
+#include "camera/Tracker.hpp"
 
 
 /**
@@ -25,8 +26,13 @@ int main( int argc, char* argv[] )
     PiDef::Options options( argc, argv );
 
 
+    // Create Tracking Module
+    PiDef::Tracker::ptr_t  tracker = std::make_shared<PiDef::Tracker>( options.Get_Target_Config() );
+    
+    
     // Create Turret-Controller
-    PiDef::Turret_Controller turret_controller( options.Get_Turret_Config() );
+    PiDef::Turret_Controller turret_controller( options.Get_Turret_Config(),
+                                                tracker );
    
 
     // Initialize the controller
@@ -39,10 +45,20 @@ int main( int argc, char* argv[] )
         PiDef::Calibration_Mode( options,
                                  turret_controller );
     }
+
+    // Check if we want defensive mode
+    else if( options.Get_Program_Mode() == PiDef::ProgramMode::DEFEND )
+    {
+    
+    }
+
+    // Otherwise, unknown mode
     else{
         BOOST_LOG_TRIVIAL(error) << "Unknown Program Mode";
         return 1;
     }
+
+
 
     return 0;
 }

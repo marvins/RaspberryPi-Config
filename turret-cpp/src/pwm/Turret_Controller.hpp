@@ -7,6 +7,7 @@
 #define __PI_DEFENDER_PWM_TURRET_CONTROLLER_HPP__
 
 // PiDef Libraries
+#include "../camera/Tracker.hpp"
 #include "PWM_Driver.hpp"
 
 
@@ -114,7 +115,8 @@ class Turret_Controller
         /**
          * @brief Constructor
         */
-        Turret_Controller( Turret_Config const& config );
+        Turret_Controller( Turret_Config const&  config,
+                           Tracker::ptr_t        tracker );
         
 
         /**
@@ -175,7 +177,13 @@ class Turret_Controller
         inline int Get_Servo_Y_Max()const{
             return m_servo_y_max;
         }
-
+        
+        /**
+         * @brief Get the Tracker
+        */
+        inline Tracker::ptr_t Get_Tracker()const{
+            return m_tracker;
+        }
 
     private:
         
@@ -194,6 +202,9 @@ class Turret_Controller
         int m_servo_x_max;
         int m_servo_y_min;
         int m_servo_y_max;
+
+        /// Tracker
+        Tracker::ptr_t m_tracker;
 
 }; // End of Turret_Controller Class
 

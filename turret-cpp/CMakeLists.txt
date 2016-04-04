@@ -35,6 +35,13 @@ if( USE_WIRINGPI )
 endif()
 
 #-------------------------------#
+#-     Find OpenCV Libraries   -#
+#-------------------------------#
+find_package( OpenCV REQUIRED )
+
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+
+#-------------------------------#
 #-     Find Boost Libraries    -#
 #-------------------------------#
 ADD_DEFINITIONS(-DBOOST_LOG_DYN_LINK)
@@ -62,6 +69,8 @@ set( PI_DEFENDER_SOURCES
      src/PiDefender.hpp
      src/calibration/Calibration_Mode.cpp
      src/calibration/Calibration_Mode.hpp
+     src/camera/Tracker.cpp
+     src/camera/Tracker.hpp
      src/core/Enumerations.cpp
      src/core/Enumerations.hpp
      src/core/GPIO_Utilities.cpp
@@ -91,6 +100,7 @@ add_executable( pi-defender
 target_link_libraries( pi-defender
                        ${WIRINGPI_LIBRARY}
                        ${Boost_LIBRARIES}
+                       ${OpenCV_LIBS}
                        pthread
                        ncurses
 )

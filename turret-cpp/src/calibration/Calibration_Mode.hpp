@@ -14,6 +14,7 @@
 namespace PiDef{
 
 
+
 /**
  * @brief Calibration Mode
  *
@@ -23,6 +24,12 @@ namespace PiDef{
 void Calibration_Mode( Options const&      options,
                        Turret_Controller&  controller );
 
+
+/**
+ * @brief Defend_Mode
+*/
+void Defend_Mode( Options const&      options,
+                  Turret_Controller&  controller );
 
 } // End of PiDef Namespace
 

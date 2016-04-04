@@ -41,8 +41,10 @@ Turret_Config::Turret_Config( const int& i2c_device_id,
 /*********************************/
 /*          Constructor          */
 /*********************************/
-Turret_Controller::Turret_Controller( const Turret_Config& config )
- : m_config(config)
+Turret_Controller::Turret_Controller( const Turret_Config&  config,
+                                      Tracker::ptr_t        tracker )
+ : m_config(config),
+   m_tracker(tracker)
 {
     m_servo_x_min = config.Get_X_Servo_Min();
     m_servo_x_max = config.Get_X_Servo_Max();

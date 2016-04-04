@@ -13,7 +13,9 @@
 // PiDef Libraries
 #include "Enumerations.hpp"
 #include "Log_Utilities.hpp"
+#include "../camera/Tracker.hpp"
 #include "../pwm/Turret_Controller.hpp"
+
 
 namespace PiDef{
 
@@ -49,6 +51,15 @@ class Options
         inline ProgramMode Get_Program_Mode()const{
             return m_program_mode;
         }
+
+        
+        /**
+         * @brief Get the Target Config
+        */
+        inline Target_Config Get_Target_Config()const{
+            return (*m_target_config);
+        }
+
 
         /**
          * @brief Get the Turret-Configuration
@@ -94,6 +105,9 @@ class Options
 
         /// Turret-Configuration
         Turret_Config::ptr_t m_turret_config;
+        
+        /// Target-Configuration
+        Target_Config::ptr_t m_target_config;
 
 }; // End of Options Class
 

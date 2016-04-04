@@ -20,6 +20,7 @@ usage()
     echo "-c | --clean : Clean software builds."
     echo '-r | --run   : Run Software.'
     echo ''
+    echo '-j <int>        : Specify number of threads.'
     echo '--cal           : Run in Calibration Mode.'
     echo '--skip-wiringpi : Build without WiringPi Support.'
     echo ''
