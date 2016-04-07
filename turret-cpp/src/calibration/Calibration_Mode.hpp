@@ -10,9 +10,25 @@
 #include "../core/Options.hpp"
 #include "../pwm/Turret_Controller.hpp"
 
+// OpenCV Libraries
+#include <opencv2/core.hpp>
+
 
 namespace PiDef{
 
+
+/**
+ * @struct Cal_Config
+*/
+struct Cal_Config
+{
+    /// Points
+    std::deque<cv::Point2i> pixels;
+    std::deque<cv::Point2i> turret_positions;
+
+    // Turret Controller
+    Turret_Controller*  turret_controller;
+}; // End of Cal_Config Struct
 
 
 /**

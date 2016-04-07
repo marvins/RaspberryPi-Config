@@ -14,23 +14,35 @@
 namespace PiDef{
 
 
-void CameraCalibrationCallbackFunc( int event, int x, int y, int flags, void* userdata)
+/*********************************************************/
+/*          Camera Calibration Callback Function         */
+/*********************************************************/
+void CameraCalibrationCallbackFunc( int   event, 
+                                    int   x, 
+                                    int   y, 
+                                    int   flags, 
+                                    void* userdata)
 {
-    if  ( event == EVENT_LBUTTONDOWN )
+
+    // Convert to Cal config
+    Cal_Config* cal_config = (Cal_Config*)userdata;
+
+
+    if  ( event == cv::EVENT_LBUTTONDOWN )
     {
-        cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+        std::cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
     }
-    else if  ( event == EVENT_RBUTTONDOWN )
+    else if  ( event == cv::EVENT_RBUTTONDOWN )
     {
-        cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+        std::cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
     }
-    else if  ( event == EVENT_MBUTTONDOWN )
+    else if  ( event == cv::EVENT_MBUTTONDOWN )
     {
-        cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+        std::cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
     }
-    else if ( event == EVENT_MOUSEMOVE )
+    else if ( event == cv::EVENT_MOUSEMOVE )
     {
-        cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+        std::cout << "Mouse move over the window - position (" << x << ", " << y << ")" << std::endl;
     }    
 }
 
@@ -104,12 +116,16 @@ void Calibration_Mode( Options const&     options,
 
         }  // End of While Loop
 
+        // Create Cal Config
+        Cal_Config* cal_config = new Cal_Config();
+        cal_config->turret_controller = &controller; 
+
 
         // Create the Camera Track Calibration
         cv::namedWindow("Camera Tracking Calibration");
         
         //set the callback function for any mouse event
-        cv::setMouseCallback("Camera Tracking Calibration", CameraCalibrationCallBackFunc, NULL);
+        cv::setMouseCallback("Camera Tracking Calibration", CameraCalibrationCallbackFunc, cal_config );
 
         // Update the Timeout
         timeout(10);
@@ -170,6 +186,9 @@ void Calibration_Mode( Options const&     options,
 
         }  // End of While Loop
 
+        // Close the Cal Config
+        cal_config->turret_controller = nullptr;
+        delete [] cal_config;
 
         // Close Screen
         endwin();
