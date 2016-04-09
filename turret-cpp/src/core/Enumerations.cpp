@@ -23,6 +23,11 @@ ProgramMode StringToProgramMode( const std::string& mode )
     if( mode == "calibration" || mode == "CALIBRATION" ){
         return ProgramMode::CALIBRATION;
     }
+
+    // Cal Test
+    if( mode == "cal_test" || mode == "CAL_TEST" ){
+        return ProgramMode::CAL_TEST;
+    }
     
     if( mode == "DEFEND" ){
         return ProgramMode::DEFEND;

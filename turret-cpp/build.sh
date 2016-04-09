@@ -22,6 +22,7 @@ usage()
     echo ''
     echo '-j <int>        : Specify number of threads.'
     echo '--cal           : Run in Calibration Mode.'
+    echo '--cal-test      : Run Calibration Test.'
     echo '--skip-wiringpi : Build without WiringPi Support.'
     echo ''
 
@@ -131,6 +132,11 @@ for ARG in "$@"; do
         #  Run Calibration
         '--cal')
             PIDEF_ARGS="--cal"
+            ;;
+
+        #  Calibration Test
+        '--cal-test')
+            PIDEF_ARGS="--cal-test"
             ;;
 
         #  Number of Threads

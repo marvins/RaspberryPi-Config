@@ -33,6 +33,17 @@ Options::Options( int argc, char* argv[] )
     // Initialize Logging
     Initialize_Logging();
 
+
+    // Build the Cal Transform
+    std::vector<double> cal_transform;
+    cal_transform.push_back(std::stod(m_config_file_data["CAL_X_0"]));
+    cal_transform.push_back(std::stod(m_config_file_data["CAL_X_1"]));
+    cal_transform.push_back(std::stod(m_config_file_data["CAL_X_2"]));
+    cal_transform.push_back(std::stod(m_config_file_data["CAL_Y_0"]));
+    cal_transform.push_back(std::stod(m_config_file_data["CAL_Y_1"]));
+    cal_transform.push_back(std::stod(m_config_file_data["CAL_Y_2"]));
+
+
     // Build the Turret-Config
     m_turret_config = std::make_shared<Turret_Config>( std::stoi(m_config_file_data["PWM_I2C_CHANNEL"]),
                                                        std::stoi(m_config_file_data["PWM_X_SERVO_CHANNEL"]),
@@ -42,7 +53,8 @@ Options::Options( int argc, char* argv[] )
                                                        std::stoi(m_config_file_data["PWM_X_SERVO_MIN"]),
                                                        std::stoi(m_config_file_data["PWM_X_SERVO_MAX"]),
                                                        std::stoi(m_config_file_data["PWM_Y_SERVO_MIN"]),
-                                                       std::stoi(m_config_file_data["PWM_Y_SERVO_MAX"]) );
+                                                       std::stoi(m_config_file_data["PWM_Y_SERVO_MAX"]),
+                                                       cal_transform );
 
     // Target-Config
     m_target_config = std::make_shared<Target_Config>( m_config_file_data["TARGET_HAAR_PAATHNAME"] );
@@ -61,6 +73,7 @@ void Options::Usage()
     // Command-Modes
     std::cout << "Command-Modes:" << std::endl;
     std::cout << "--cal      : Calibrate Turret" << std::endl;
+    std::cout << "--cal-test : Calibration Test" << std::endl;
     std::cout << std::endl;
 }
 
@@ -113,6 +126,12 @@ void Options::Parse_Command_Line( int argc, char* argv[] )
         else if( arg == "--cal" )
         {
             m_program_mode = ProgramMode::CALIBRATION;
+        }
+
+        // Calibration Test
+        else if( arg == "--cal-test" )
+        {
+            m_program_mode = ProgramMode::CAL_TEST;
         }
 
         // Error

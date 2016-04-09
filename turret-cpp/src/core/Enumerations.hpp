@@ -22,7 +22,8 @@ enum class ProgramMode : int8_t
     UNKNOWN     = 0 /**< This should be an error condition.*/,
     KEYBOARD    = 1 /**< Control using the keyboard.*/,
     CALIBRATION = 2 /**< Calibrate System.*/,
-    DEFEND      = 3 /**< Standard Mode.*/,
+    CAL_TEST    = 3 /**< Test the Calibration Settings.*/,
+    DEFEND      = 4 /**< Standard Mode.*/,
 }; // End of ProgramMode Enumeration
 
 

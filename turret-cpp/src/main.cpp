@@ -45,6 +45,13 @@ int main( int argc, char* argv[] )
         PiDef::Calibration_Mode( options,
                                  turret_controller );
     }
+    
+    // Calibration Test
+    else if( options.Get_Program_Mode() == PiDef::ProgramMode::CAL_TEST )
+    {
+        PiDef::Calibration_Test( options,
+                                 turret_controller );
+    }
 
     // Check if we want defensive mode
     else if( options.Get_Program_Mode() == PiDef::ProgramMode::DEFEND )

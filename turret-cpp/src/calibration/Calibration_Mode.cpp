@@ -30,19 +30,26 @@ void CameraCalibrationCallbackFunc( int   event,
 
     if  ( event == cv::EVENT_LBUTTONDOWN )
     {
-        std::cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
+        // Get the turret position
+        int tx = cal_config->turret_controller->Get_Current_X(); 
+        int ty = cal_config->turret_controller->Get_Current_Y(); 
+        
+        // Set the Pixel Value
+        cal_config->pixels.push_back(cv::Point2i( x, y));
+        cal_config->turret_positions.push_back(cv::Point2i( tx, ty));
+
+        std::cout << "Found Point at (" << x << ", " << y << ")" << std::endl;
+        std::cout << "      Servo ( " << tx << ", " << ty << ")" << std::endl;
+        std::cin.get();
     }
     else if  ( event == cv::EVENT_RBUTTONDOWN )
     {
-        std::cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
     }
     else if  ( event == cv::EVENT_MBUTTONDOWN )
     {
-        std::cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << std::endl;
     }
     else if ( event == cv::EVENT_MOUSEMOVE )
     {
-        std::cout << "Mouse move over the window - position (" << x << ", " << y << ")" << std::endl;
     }    
 }
 
@@ -124,8 +131,11 @@ void Calibration_Mode( Options const&     options,
         // Create the Camera Track Calibration
         cv::namedWindow("Camera Tracking Calibration");
         
+
         //set the callback function for any mouse event
-        cv::setMouseCallback("Camera Tracking Calibration", CameraCalibrationCallbackFunc, cal_config );
+        cv::setMouseCallback( "Camera Tracking Calibration", 
+                              CameraCalibrationCallbackFunc, 
+                              cal_config );
 
         // Update the Timeout
         timeout(10);
@@ -185,6 +195,9 @@ void Calibration_Mode( Options const&     options,
             }
 
         }  // End of While Loop
+        
+        // Solve the Transforms
+        Solve_Camera_Calibration( *cal_config );
 
         // Close the Cal Config
         cal_config->turret_controller = nullptr;
@@ -199,6 +212,35 @@ void Calibration_Mode( Options const&     options,
 }
 
 
+/********************************************/
+/*          Calibration Test Mode           */
+/********************************************/
+void Calibration_Test( Options const&      options,
+                       Turret_Controller&  controller )
+{
+    // Create Window
+    cv::namedWindow("Calibration Test");
+
+    // Update the Camera
+    controller.Get_Tracker()->Update();
+    int divisor = 32, ch;
+    
+    // Compute the Test Range
+    for( int x=0; x<640; x += divisor )
+    for( int y=0; y<480; y += divisor )
+    {
+        // Print the 
+        std::cout << x << ", " << y << std::endl;
+        cv::imshow("Calibration Test", controller.Get_Tracker()->Get_Latest_Camera_Frame());
+        ch = cv::waitKey(0);
+
+        // Apply the Transform
+        controller.Move_To_Pixel( x, y );
+    }
+
+}
+
+
 /************************************/
 /*           Defend Mode            */
 /************************************/
@@ -208,6 +250,41 @@ void Defend_Mode( Options const&      options,
 
     // Start the main loop
 
+
+}
+
+
+/********************************************************/
+/*          Solve Camera Calibration Equations          */
+/********************************************************/
+void Solve_Camera_Calibration( Cal_Config& cal_config )
+{
+
+    //  Create Transform
+    cv::Mat A = cv::Mat::ones( cal_config.pixels.size(), 3, CV_64FC1);
+    for( size_t i=0; i<cal_config.pixels.size(); i++ ){
+        A.at<double>(i,0) = cal_config.pixels[i].x;
+        A.at<double>(i,1) = cal_config.pixels[i].y;
+    } 
+
+    // Construct X and Y transforms
+    cv::Mat xy = cv::Mat::zeros( cal_config.turret_positions.size(), 2, CV_64FC1 );
+    for( size_t i=0; i<cal_config.turret_positions.size(); i++ ){
+        xy.at<double>(i,0) = cal_config.turret_positions[i].x;
+        xy.at<double>(i,1) = cal_config.turret_positions[i].y;
+    }
+
+    // Solve
+    cv::Mat Ainv;
+    
+    if( cv::solve( A, xy, Ainv, cv::DECOMP_SVD ) == false ){
+        BOOST_LOG_TRIVIAL(error) << "Unable to calibrate.";
+        return;
+    }
+
+    // Otherwise, set the matrix
+    std::cout << Ainv << std::endl;
+    std::cin.get();
 
 }
 

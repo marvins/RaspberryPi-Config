@@ -26,8 +26,8 @@ struct Cal_Config
     std::deque<cv::Point2i> pixels;
     std::deque<cv::Point2i> turret_positions;
 
-    // Turret Controller
     Turret_Controller*  turret_controller;
+
 }; // End of Cal_Config Struct
 
 
@@ -42,10 +42,22 @@ void Calibration_Mode( Options const&      options,
 
 
 /**
+ * @brief Calibration Test.
+*/
+void Calibration_Test( Options const&      options,
+                       Turret_Controller&  controller );
+
+/**
  * @brief Defend_Mode
 */
 void Defend_Mode( Options const&      options,
                   Turret_Controller&  controller );
+
+
+/**
+ * @brief Solve Camera Calibration
+*/
+void Solve_Camera_Calibration( Cal_Config& cal_config );
 
 } // End of PiDef Namespace
 

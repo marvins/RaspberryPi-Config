@@ -13,6 +13,22 @@
 
 namespace PiDef{
 
+
+/*******************************************/
+/*          Apply Transformation           */
+/*******************************************/
+void Apply_Transform( const std::vector<double>& transform, 
+                      const int&                 px,
+                      const int&                 py,
+                      int&                       sx,
+                      int&                       sy )
+{
+
+    sx = transform[0] * px + transform[1] * py + transform[2];
+    sy = transform[3] * px + transform[4] * py + transform[5];
+}
+
+
 /********************************/
 /*          Constructor         */
 /********************************/
@@ -24,7 +40,8 @@ Turret_Config::Turret_Config( const int& i2c_device_id,
                               const int& x_servo_min,
                               const int& x_servo_max,
                               const int& y_servo_min,
-                              const int& y_servo_max )
+                              const int& y_servo_max,
+                              const std::vector<double>& cal_transform )
  : m_i2c_device_id(m_i2c_device_id),
    m_x_servo_channel(x_servo_channel),
    m_y_servo_channel(y_servo_channel),
@@ -33,7 +50,8 @@ Turret_Config::Turret_Config( const int& i2c_device_id,
    m_x_servo_min(x_servo_min),
    m_x_servo_max(x_servo_max),
    m_y_servo_min(y_servo_min),
-   m_y_servo_max(y_servo_max)
+   m_y_servo_max(y_servo_max),
+   m_cal_transform(cal_transform)
 {
 }
 
@@ -76,6 +94,23 @@ void Turret_Controller::Initialize()
     // Set the Values
     Rotate_X(0);
     Rotate_Y(0);
+}
+
+
+/************************************************/
+/*          Move to the Pixel Location          */
+/************************************************/
+void Turret_Controller::Move_To_Pixel( const int& x,
+                                       const int& y )
+{
+
+    // Apply the transform
+    int sx, sy;
+    Apply_Transform( m_config.Get_Cal_Transform(), x, y, sx, sy );
+    
+    // Rotate
+    Rotate_X( sx );
+    Rotate_Y( sy );
 }
 
 

@@ -10,6 +10,10 @@
 #include "../camera/Tracker.hpp"
 #include "PWM_Driver.hpp"
 
+// C++ Libraries
+#include <string>
+#include <vector>
+
 
 namespace PiDef{
 
@@ -27,15 +31,16 @@ class Turret_Config
         /**
          * @brief Constructor
         */
-        Turret_Config( const int& i2c_device_id,
-                       const int& x_servo_channel,
-                       const int& y_servo_channel,
-                       const int& x_servo_start,
-                       const int& y_servo_start,
-                       const int& x_servo_min,
-                       const int& x_servo_max,
-                       const int& y_servo_min,
-                       const int& y_servo_max );
+        Turret_Config( const int&                  i2c_device_id,
+                       const int&                  x_servo_channel,
+                       const int&                  y_servo_channel,
+                       const int&                  x_servo_start,
+                       const int&                  y_servo_start,
+                       const int&                  x_servo_min,
+                       const int&                  x_servo_max,
+                       const int&                  y_servo_min,
+                       const int&                  y_servo_max,
+                       const std::vector<double>&  cal_transform );
 
         /**
          * @brief Get the I2C Device ID
@@ -82,6 +87,14 @@ class Turret_Config
             return m_y_servo_max;
         }
 
+        /**
+         * @brief Get the Calibration Transform
+        */
+        inline std::vector<double> Get_Cal_Transform()const{
+            return m_cal_transform;
+        }
+
+
     private:
         
         /// Device ID
@@ -101,6 +114,8 @@ class Turret_Config
         int m_x_servo_max;
         int m_y_servo_min;
         int m_y_servo_max;
+
+        std::vector<double> m_cal_transform;
 
 }; // End of Turret_Config Class
 
@@ -185,6 +200,13 @@ class Turret_Controller
             return m_tracker;
         }
 
+
+        /**
+         * @brief Move to the specified pixel location.
+        */
+        void Move_To_Pixel( const int& x,
+                            const int& y );
+
     private:
         
         /// Configuration
@@ -202,6 +224,9 @@ class Turret_Controller
         int m_servo_x_max;
         int m_servo_y_min;
         int m_servo_y_max;
+
+        /// Transform
+        
 
         /// Tracker
         Tracker::ptr_t m_tracker;
