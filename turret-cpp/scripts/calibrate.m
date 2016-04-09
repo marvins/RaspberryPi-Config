@@ -74,4 +74,4 @@ printf('W3: %d, %d from %d %d, Expect: %d %d\n', Wx3, Wy3, P(3,1), P(3,2), W(3,1
 printf('W4: %d, %d from %d %d, Expect: %d %d\n', Wx4, Wy4, P(4,1), P(4,2), W(4,1), W(4,2));
 printf('W5: %d, %d from %d %d, Expect: %d %d\n', Wx5, Wy5, P(5,1), P(5,2), W(5,1), W(5,2));
 
-printf('%f %f %f %f %f %f', adfGeoTransform)
+printf(' %f %f %f\n %f %f %f\n', adfGeoTransform)
