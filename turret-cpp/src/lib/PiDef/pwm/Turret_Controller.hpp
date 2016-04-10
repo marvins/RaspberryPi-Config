@@ -151,6 +151,18 @@ class Turret_Controller
         */
         void Rotate_Y( const int& value );
         
+
+        /**
+         * @brief Move to Servo Position
+        */
+        void Rotate_Servo_X( const int& value );
+
+
+        /**
+         * @brief Move to Servo Position
+        */
+        void Rotate_Servo_Y( const int& value );
+
         
         /**
          * @brief Get the Current X Value

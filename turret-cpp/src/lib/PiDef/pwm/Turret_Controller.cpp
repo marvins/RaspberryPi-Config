@@ -24,8 +24,8 @@ void Apply_Transform( const std::vector<double>& transform,
                       int&                       sy )
 {
 
-    sx = transform[0] * px + transform[1] * py + transform[2];
-    sy = transform[3] * px + transform[4] * py + transform[5];
+    sx = transform[2] + (px * transform[0]) + (py * transform[1]);
+    sy = transform[5] + (px * transform[3]) + (py * transform[4]);
 }
 
 
@@ -42,7 +42,7 @@ Turret_Config::Turret_Config( const int& i2c_device_id,
                               const int& y_servo_min,
                               const int& y_servo_max,
                               const std::vector<double>& cal_transform )
- : m_i2c_device_id(m_i2c_device_id),
+ : m_i2c_device_id(i2c_device_id),
    m_x_servo_channel(x_servo_channel),
    m_y_servo_channel(y_servo_channel),
    m_x_servo_start(x_servo_start),
@@ -108,9 +108,11 @@ void Turret_Controller::Move_To_Pixel( const int& x,
     int sx, sy;
     Apply_Transform( m_config.Get_Cal_Transform(), x, y, sx, sy );
     
+    BOOST_LOG_TRIVIAL(debug) << "Pixel: " << x << ", " << y << ", Turret: " << sx << ", " << sy;
+
     // Rotate
-    Rotate_X( sx );
-    Rotate_Y( sy );
+    Rotate_Servo_X( sx );
+    Rotate_Servo_Y( sy );
 }
 
 
@@ -147,6 +149,42 @@ void Turret_Controller::Rotate_Y( const int& value )
                              m_current_y_value );
 
 }
+
+
+/**********************************/
+/*          Rotate X Axis         */
+/**********************************/
+void Turret_Controller::Rotate_Servo_X( const int& value )
+{
+    // Set the values
+    m_current_x_value = std::min( m_servo_x_max, value );
+    m_current_x_value = std::max( m_servo_x_min, value );
+
+    // Move
+    m_servo_driver->Set_PWM( m_config.Get_X_Servo_Channel(),
+                             0, 
+                             m_current_x_value );
+                                    
+}
+
+
+/**********************************/
+/*          Rotate Y Axis         */
+/**********************************/
+void Turret_Controller::Rotate_Servo_Y( const int& value )
+{
+
+    // Set the values
+    m_current_y_value = std::min( m_servo_y_max, value );
+    m_current_y_value = std::max( m_servo_y_min, value );
+
+    // Move
+    m_servo_driver->Set_PWM( m_config.Get_Y_Servo_Channel(),
+                             0, 
+                             m_current_y_value );
+
+}
+
 
 } // End of PiDef Namespace
 

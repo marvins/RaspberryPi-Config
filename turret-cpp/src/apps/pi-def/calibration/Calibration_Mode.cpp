@@ -11,9 +11,6 @@
 #include <vector>
 
 
-namespace PiDef{
-
-
 /*********************************************************/
 /*          Camera Calibration Callback Function         */
 /*********************************************************/
@@ -56,8 +53,8 @@ void CameraCalibrationCallbackFunc( int   event,
 /*************************************/
 /*          Calibration Mode         */
 /*************************************/
-void Calibration_Mode( Options const&     options,
-                       Turret_Controller& controller )
+void Calibration_Mode( Options const&            options,
+                       PiDef::Turret_Controller& controller )
 {
 
     // Log Entry
@@ -86,6 +83,8 @@ void Calibration_Mode( Options const&     options,
             mvprintw( 8, 3, ("Servo Y Min: " + std::to_string(controller.Get_Servo_Y_Min())).c_str());
             mvprintw( 9, 3, ("Servo Y Max: " + std::to_string(controller.Get_Servo_Y_Max())).c_str());
             mvprintw(10, 3, ("Last Key Value: " + std::to_string(ch)).c_str()); 
+            
+            
             // Refresh the screen
             refresh();
 
@@ -215,27 +214,47 @@ void Calibration_Mode( Options const&     options,
 /********************************************/
 /*          Calibration Test Mode           */
 /********************************************/
-void Calibration_Test( Options const&      options,
-                       Turret_Controller&  controller )
+void Calibration_Test( Options const&             options,
+                       PiDef::Turret_Controller&  controller )
 {
     // Create Window
     cv::namedWindow("Calibration Test");
 
     // Update the Camera
     controller.Get_Tracker()->Update();
-    int divisor = 32, ch;
-    
+    int divisor = 128, ch;
+    cv::Mat image;
+
     // Compute the Test Range
-    for( int x=0; x<640; x += divisor )
-    for( int y=0; y<480; y += divisor )
+    bool exit_loop = false;
+    for( int x=0; x<640 && !exit_loop; x += divisor )
+    for( int y=0; y<480 && !exit_loop; y += divisor )
     {
-        // Print the 
-        std::cout << x << ", " << y << std::endl;
-        cv::imshow("Calibration Test", controller.Get_Tracker()->Get_Latest_Camera_Frame());
-        ch = cv::waitKey(0);
+        // Grab the Latest Frame
+        image = controller.Get_Tracker()->Get_Latest_Camera_Frame();
+
+        // Draw the Circle
+        cv::circle( image, 
+                    cv::Point2i( x,y), 
+                    5, 
+                    cv::Scalar(0,255,0),
+                    2);
 
         // Apply the Transform
         controller.Move_To_Pixel( x, y );
+        
+        // Print the 
+        std::cout << x << ", " << y << std::endl;
+        cv::imshow( "Calibration Test", 
+                    image );
+        ch = cv::waitKey(0);
+
+
+        // Check the value
+        if( ch == 'q' ){
+            exit_loop = true;
+        }
+
     }
 
 }
@@ -244,8 +263,8 @@ void Calibration_Test( Options const&      options,
 /************************************/
 /*           Defend Mode            */
 /************************************/
-void Defend_Mode( Options const&      options,
-        Turret_Controller&  controller )
+void Defend_Mode( Options const&             options,
+                  PiDef::Turret_Controller&  controller )
 {
 
     // Start the main loop
@@ -265,29 +284,33 @@ void Solve_Camera_Calibration( Cal_Config& cal_config )
     for( size_t i=0; i<cal_config.pixels.size(); i++ ){
         A.at<double>(i,0) = cal_config.pixels[i].x;
         A.at<double>(i,1) = cal_config.pixels[i].y;
+        A.at<double>(i,2) = 1;
     } 
 
     // Construct X and Y transforms
-    cv::Mat xy = cv::Mat::zeros( cal_config.turret_positions.size(), 2, CV_64FC1 );
+    cv::Mat x = cv::Mat::zeros( cal_config.turret_positions.size(), 1, CV_64FC1 );
+    cv::Mat y = cv::Mat::zeros( cal_config.turret_positions.size(), 1, CV_64FC1 );
     for( size_t i=0; i<cal_config.turret_positions.size(); i++ ){
-        xy.at<double>(i,0) = cal_config.turret_positions[i].x;
-        xy.at<double>(i,1) = cal_config.turret_positions[i].y;
+        x.at<double>(i,0) = cal_config.turret_positions[i].x;
+        y.at<double>(i,0) = cal_config.turret_positions[i].y;
     }
 
     // Solve
-    cv::Mat Ainv;
+    cv::Mat AXinv, AYinv;
     
-    if( cv::solve( A, xy, Ainv, cv::DECOMP_SVD ) == false ){
+    if( cv::solve( A, x, AXinv, cv::DECOMP_SVD ) == false ){
+        BOOST_LOG_TRIVIAL(error) << "Unable to calibrate.";
+        return;
+    }
+    if( cv::solve( A, y, AYinv, cv::DECOMP_SVD ) == false ){
         BOOST_LOG_TRIVIAL(error) << "Unable to calibrate.";
         return;
     }
 
     // Otherwise, set the matrix
-    std::cout << Ainv << std::endl;
+    std::cout << AXinv << ", " << AYinv  << std::endl;
     std::cin.get();
 
 }
 
-
-} // End of PiDef Module
 

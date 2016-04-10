@@ -9,4 +9,11 @@
 /// Configuration State for if we are using WiringPi or not.
 #define PIDEF_USE_WIRINGPI @PIDEF_USE_WIRINGPI@
 
+/// Sub-Projects
+#include "PiDef/camera/Tracker.hpp"
+#include "PiDef/core/Log_Utilities.hpp"
+#include "PiDef/core/String_Utilities.hpp"
+#include "PiDef/pwm/Turret_Controller.hpp"
+
+
 #endif

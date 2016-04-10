@@ -3,21 +3,20 @@
  * @author  Marvin Smith
  * @date    3/26/2016
 */
-#ifndef __PI_DEFENDER_CORE_OPTIONS_HPP__
-#define __PI_DEFENDER_CORE_OPTIONS_HPP__
+#ifndef __PI_DEFENDER_APP_PIDEF_CORE_OPTIONS_HPP__
+#define __PI_DEFENDER_APP_PIDEF_CORE_OPTIONS_HPP__
 
 // C++ Libraries
 #include <map>
 #include <string>
 
-// PiDef Libraries
+// Application Libraries
 #include "Enumerations.hpp"
-#include "Log_Utilities.hpp"
-#include "../camera/Tracker.hpp"
-#include "../pwm/Turret_Controller.hpp"
 
 
-namespace PiDef{
+// PiDef Libraries
+#include <PiDefender.hpp>
+
 
 /**
  * @class Options
@@ -56,7 +55,7 @@ class Options
         /**
          * @brief Get the Target Config
         */
-        inline Target_Config Get_Target_Config()const{
+        inline PiDef::Target_Config Get_Target_Config()const{
             return (*m_target_config);
         }
 
@@ -64,7 +63,7 @@ class Options
         /**
          * @brief Get the Turret-Configuration
         */
-        inline Turret_Config Get_Turret_Config()const{
+        inline PiDef::Turret_Config Get_Turret_Config()const{
             return (*m_turret_config);
         }
 
@@ -104,14 +103,12 @@ class Options
         ProgramMode m_program_mode;
 
         /// Turret-Configuration
-        Turret_Config::ptr_t m_turret_config;
+        PiDef::Turret_Config::ptr_t m_turret_config;
         
         /// Target-Configuration
-        Target_Config::ptr_t m_target_config;
+        PiDef::Target_Config::ptr_t m_target_config;
 
 }; // End of Options Class
-
-} // End of PiDef Namespace
 
 
 #endif

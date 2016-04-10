@@ -81,7 +81,7 @@ run_software()
     echo "Running Software. Build Type: ${BUILD_TYPE}"
     
     #  Create CMD
-    CMD="${BUILD_TYPE}/pi-defender ${PIDEF_ARGS}"
+    CMD="${BUILD_TYPE}/bin/pi-defender ${PIDEF_ARGS}"
 
     # Run Command
     $CMD

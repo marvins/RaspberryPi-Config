@@ -6,15 +6,17 @@
 #ifndef __PIDEF_CAL_CALIBRATION_MODE_HPP__
 #define __PIDEF_CAL_CALIBRATION_MODE_HPP__
 
-// PiDef Libraries
+// Application Libraries
 #include "../core/Options.hpp"
-#include "../pwm/Turret_Controller.hpp"
+
+
+// PiDef Libraries
+#include <PiDef/core/Log_Utilities.hpp>
+#include <PiDef/pwm/Turret_Controller.hpp>
+
 
 // OpenCV Libraries
 #include <opencv2/core.hpp>
-
-
-namespace PiDef{
 
 
 /**
@@ -26,7 +28,7 @@ struct Cal_Config
     std::deque<cv::Point2i> pixels;
     std::deque<cv::Point2i> turret_positions;
 
-    Turret_Controller*  turret_controller;
+    PiDef::Turret_Controller*  turret_controller;
 
 }; // End of Cal_Config Struct
 
@@ -37,21 +39,21 @@ struct Cal_Config
  * @param[in] options
  * @param[in] controller
 */
-void Calibration_Mode( Options const&      options,
-                       Turret_Controller&  controller );
+void Calibration_Mode( Options const&             options,
+                       PiDef::Turret_Controller&  controller );
 
 
 /**
  * @brief Calibration Test.
 */
-void Calibration_Test( Options const&      options,
-                       Turret_Controller&  controller );
+void Calibration_Test( Options const&             options,
+                       PiDef::Turret_Controller&  controller );
 
 /**
  * @brief Defend_Mode
 */
-void Defend_Mode( Options const&      options,
-                  Turret_Controller&  controller );
+void Defend_Mode( Options const&             options,
+                  PiDef::Turret_Controller&  controller );
 
 
 /**
@@ -59,6 +61,5 @@ void Defend_Mode( Options const&      options,
 */
 void Solve_Camera_Calibration( Cal_Config& cal_config );
 
-} // End of PiDef Namespace
 
 #endif

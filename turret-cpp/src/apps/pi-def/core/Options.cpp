@@ -10,11 +10,6 @@
 #include <fstream>
 #include <iostream>
 
-// PiDef Libraries
-#include "String_Utilities.hpp"
-
-
-namespace PiDef{
 
 /********************************/
 /*          Constructor         */
@@ -45,19 +40,19 @@ Options::Options( int argc, char* argv[] )
 
 
     // Build the Turret-Config
-    m_turret_config = std::make_shared<Turret_Config>( std::stoi(m_config_file_data["PWM_I2C_CHANNEL"]),
-                                                       std::stoi(m_config_file_data["PWM_X_SERVO_CHANNEL"]),
-                                                       std::stoi(m_config_file_data["PWM_Y_SERVO_CHANNEL"]),
-                                                       std::stoi(m_config_file_data["PWM_X_SERVO_START"]),
-                                                       std::stoi(m_config_file_data["PWM_Y_SERVO_START"]),
-                                                       std::stoi(m_config_file_data["PWM_X_SERVO_MIN"]),
-                                                       std::stoi(m_config_file_data["PWM_X_SERVO_MAX"]),
-                                                       std::stoi(m_config_file_data["PWM_Y_SERVO_MIN"]),
-                                                       std::stoi(m_config_file_data["PWM_Y_SERVO_MAX"]),
-                                                       cal_transform );
+    m_turret_config = std::make_shared<PiDef::Turret_Config>( std::stoi(m_config_file_data["PWM_I2C_CHANNEL"]),
+                                                              std::stoi(m_config_file_data["PWM_X_SERVO_CHANNEL"]),
+                                                              std::stoi(m_config_file_data["PWM_Y_SERVO_CHANNEL"]),
+                                                              std::stoi(m_config_file_data["PWM_X_SERVO_START"]),
+                                                              std::stoi(m_config_file_data["PWM_Y_SERVO_START"]),
+                                                              std::stoi(m_config_file_data["PWM_X_SERVO_MIN"]),
+                                                              std::stoi(m_config_file_data["PWM_X_SERVO_MAX"]),
+                                                              std::stoi(m_config_file_data["PWM_Y_SERVO_MIN"]),
+                                                              std::stoi(m_config_file_data["PWM_Y_SERVO_MAX"]),
+                                                              cal_transform );
 
     // Target-Config
-    m_target_config = std::make_shared<Target_Config>( m_config_file_data["TARGET_HAAR_PAATHNAME"] );
+    m_target_config = std::make_shared<PiDef::Target_Config>( m_config_file_data["TARGET_HAAR_PAATHNAME"] );
 
 }
 
@@ -203,8 +198,6 @@ void Options::Parse_Configuration_File()
 /************************************/
 void Options::Initialize_Logging()
 {
-    Initialize_Logger( m_log_level );
+    PiDef::Initialize_Logger( m_log_level );
 }
-
-} // End of PiDef Namespace
 

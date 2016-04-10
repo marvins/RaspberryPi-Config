@@ -1,13 +1,11 @@
 /**
  * @file    Enumerations.cpp
  * @author  Marvin Smith
- * @date    3/27/2016
+ * @date    4/10/2016
 */
 #include "Enumerations.hpp"
-
-namespace PiDef{
-
-
+ 
+ 
 /****************************************************/
 /*          Convert String to Program Mode          */
 /****************************************************/
@@ -38,5 +36,4 @@ ProgramMode StringToProgramMode( const std::string& mode )
 }
 
 
-} // End of PiDef Namespace
 

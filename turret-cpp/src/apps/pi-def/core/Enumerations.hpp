@@ -1,18 +1,14 @@
 /**
  * @file    Enumerations.hpp
  * @author  Marvin Smith
- * @date    3/27/2016
+ * @date    4/10/2016
 */
-#ifndef __PIDEF_CORE_ENUMERATIONS_HPP__
-#define __PIDEF_CORE_ENUMERATIONS_HPP__
+#ifndef __PI_DEFENDER_APP_PIDEF_CORE_ENUMERATIONS_HPP__
+#define __PI_DEFENDER_APP_PIDEF_CORE_ENUMERATIONS_HPP__
 
 // C++ Libraries
 #include <cinttypes>
 #include <string>
-
-
-namespace PiDef{
-
 
 /**
  * @enum ProgramMode
@@ -32,7 +28,6 @@ enum class ProgramMode : int8_t
 */
 ProgramMode StringToProgramMode( const std::string& mode );
 
-} // End of PiDef Namespace
 
 
 #endif

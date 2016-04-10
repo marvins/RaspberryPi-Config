@@ -8,13 +8,12 @@
 #include <iostream>
 #include <string>
 
-// I2C Libraries
-#include "calibration/Calibration_Mode.hpp"
-#include "core/Log_Utilities.hpp"
-#include "core/Options.hpp"
-#include "pwm/Turret_Controller.hpp"
-#include "camera/Tracker.hpp"
+// PiDef Libraries
+#include <PiDefender.hpp>
 
+// Application Libraries
+#include "calibration/Calibration_Mode.hpp"
+#include "core/Options.hpp"
 
 /**
  * @brief Main Application
@@ -23,7 +22,7 @@ int main( int argc, char* argv[] )
 {
 
     // Parse Options
-    PiDef::Options options( argc, argv );
+    Options options( argc, argv );
 
 
     // Create Tracking Module
@@ -40,21 +39,21 @@ int main( int argc, char* argv[] )
 
     
     // Check if we want Calibration Mode
-    if( options.Get_Program_Mode() == PiDef::ProgramMode::CALIBRATION )
+    if( options.Get_Program_Mode() == ProgramMode::CALIBRATION )
     {
-        PiDef::Calibration_Mode( options,
-                                 turret_controller );
+        Calibration_Mode( options,
+                          turret_controller );
     }
     
     // Calibration Test
-    else if( options.Get_Program_Mode() == PiDef::ProgramMode::CAL_TEST )
+    else if( options.Get_Program_Mode() == ProgramMode::CAL_TEST )
     {
-        PiDef::Calibration_Test( options,
-                                 turret_controller );
+        Calibration_Test( options,
+                          turret_controller );
     }
 
     // Check if we want defensive mode
-    else if( options.Get_Program_Mode() == PiDef::ProgramMode::DEFEND )
+    else if( options.Get_Program_Mode() == ProgramMode::DEFEND )
     {
     
     }
@@ -64,7 +63,6 @@ int main( int argc, char* argv[] )
         BOOST_LOG_TRIVIAL(error) << "Unknown Program Mode";
         return 1;
     }
-
 
 
     return 0;
