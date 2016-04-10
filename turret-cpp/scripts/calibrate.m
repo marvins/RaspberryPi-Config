@@ -74,4 +74,9 @@ printf('W3: %d, %d from %d %d, Expect: %d %d\n', Wx3, Wy3, P(3,1), P(3,2), W(3,1
 printf('W4: %d, %d from %d %d, Expect: %d %d\n', Wx4, Wy4, P(4,1), P(4,2), W(4,1), W(4,2));
 printf('W5: %d, %d from %d %d, Expect: %d %d\n', Wx5, Wy5, P(5,1), P(5,2), W(5,1), W(5,2));
 
+[W1x,W1y] = Apply_GeoTransform( 0,  0, adfGeoTransform )
+[W2x,W2y] = Apply_GeoTransform( 0, 32, adfGeoTransform )
+printf('P1: %d, %d, -> W1: %d, %d\n', 0,  0, W1x, W1y )
+printf('P2: %d, %d, -> W2: %d, %d\n', 0, 32, W2x, W2y )
+
 printf(' %f %f %f\n %f %f %f\n', adfGeoTransform)
