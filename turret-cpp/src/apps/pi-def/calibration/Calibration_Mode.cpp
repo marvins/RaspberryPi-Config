@@ -268,7 +268,70 @@ void Defend_Mode( Options const&             options,
 {
 
     // Start the main loop
+    cv::namedWindow("Calibration Test");
 
+    // Update the Camera
+    controller.Get_Tracker()->Update();
+    int ch, x, y;
+    bool active;
+    cv::Mat image;
+
+    // Compute the Test Range
+    bool exit_loop = false;
+    while( !exit_loop )
+    {
+        // Update
+        controller.Get_Tracker()->Update();
+        
+        // Grab the Latest Frame
+        image = controller.Get_Tracker()->Get_Latest_Camera_Frame();
+
+        controller.Get_Tracker()->Get_Active_Target( active );
+
+        // Draw the Circle
+        if( active )
+        {
+            x = std::get<0>(controller.Get_Tracker()->Get_Active_Target().Get_Position());
+            y = std::get<1>(controller.Get_Tracker()->Get_Active_Target().Get_Position());
+
+            // Draw the circle
+            cv::circle( image, 
+                        cv::Point2i( x,y), 
+                        5, 
+                        cv::Scalar(0,255,0),
+                        2);
+
+            // Apply the Transform
+            controller.Move_To_Pixel( x, y );
+        
+        }
+        else{
+            x = 320;
+            y = 240;
+
+            // Draw the circle
+            cv::circle( image, 
+                        cv::Point2i(x,y), 
+                        5, 
+                        cv::Scalar(255,0,0),
+                        2);
+
+            // Apply the Transform
+            controller.Move_To_Pixel( x, y );
+        }
+
+        // Print the 
+        cv::imshow( "Calibration Test", 
+                    image );
+        ch = cv::waitKey(10);
+
+
+        // Check the value
+        if( ch == 'q' ){
+            exit_loop = true;
+        }
+
+    }
 
 }
 

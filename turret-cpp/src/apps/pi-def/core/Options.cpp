@@ -52,7 +52,7 @@ Options::Options( int argc, char* argv[] )
                                                               cal_transform );
 
     // Target-Config
-    m_target_config = std::make_shared<PiDef::Target_Config>( m_config_file_data["TARGET_HAAR_PAATHNAME"] );
+    m_target_config = std::make_shared<PiDef::Target_Config>( m_config_file_data["TARGET_HAAR_PATHNAME"] );
 
 }
 

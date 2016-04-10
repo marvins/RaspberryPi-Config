@@ -122,6 +122,15 @@ class Tracker
         /**
          * @brief Get Target 
         */
+        inline Target Get_Active_Target( bool& active )const{
+            active = m_active;
+            return m_current_target;
+        }
+
+        
+        /**
+         * @brief Get Target 
+        */
         inline Target Get_Active_Target()const{
             return m_current_target;
         }
@@ -148,12 +157,16 @@ class Tracker
 
         ///  Current Target
         Target m_current_target;
+        bool m_active;
         
         /// Video Capture
         cv::VideoCapture m_cap;
 
         /// Latest Image
         cv::Mat m_latest_image;
+
+        /// Classifier
+        cv::CascadeClassifier m_face_cascade;
 
 }; // End of Tracker Class
 

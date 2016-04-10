@@ -55,7 +55,8 @@ int main( int argc, char* argv[] )
     // Check if we want defensive mode
     else if( options.Get_Program_Mode() == ProgramMode::DEFEND )
     {
-    
+        Defend_Mode( options,
+                     turret_controller );
     }
 
     // Otherwise, unknown mode
