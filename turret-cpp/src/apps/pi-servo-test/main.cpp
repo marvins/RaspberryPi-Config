@@ -52,6 +52,13 @@ int main( int argc, char* argv[] )
     std::vector<cv::Point2i> point_list;
     point_list.push_back(cv::Point2i(346,276));
     point_list.push_back(cv::Point2i(244,260));
+    point_list.push_back(cv::Point2i(246,168));
+    point_list.push_back(cv::Point2i(344,190));
+
+    //  Corners: Top-Left:  (  20,  13) -> ( 346, 276)
+    //  Corners: Top-Right: ( 635,   9) -> ( 244, 260)
+    //  Corners: Bot-Right: ( 620, 451) -> ( 246, 168)
+    //  Corners: Bot-Left:  (  48, 465) -> ( 344, 190)
     
     int ch;
     cv::Mat image;
