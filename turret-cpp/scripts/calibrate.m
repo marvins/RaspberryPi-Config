@@ -25,7 +25,7 @@ num_points = size(plist)(1)/4;
 
 cnt=1
 A = ones(num_points,3)
-W = ones(num_points,2)
+W = ones(num_points,3)
 for p = 1:8
     A(p,1) = plist(cnt)
     cnt += 1
@@ -61,6 +61,11 @@ Ai = [P(1,1), P(1,2) 1;
       P(2,1), P(2,2) 1;
       P(3,1), P(3,2) 1;
       P(4,1), P(4,2) 1];
+
+size(Ai)
+size(W)
+
+
 
 %  Build Output Solution Pairs
 Bx = [W(1,1);
