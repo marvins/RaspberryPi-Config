@@ -9,6 +9,14 @@ function [Wx, Wy] = Apply_GeoTransform( Px, Py, adfGeoTransform )
 
 endfunction
 
+
+function P = Read_File( pathname )
+
+    a = textread( pathname, '%f' )
+    return a
+endfunction
+
+
 %  For Reference Only
 % (161, 353) -> (340,176)
 % (101, 107) -> (352,222)

@@ -6,6 +6,8 @@
 #include "Calibration_Mode.hpp"
 
 // C++ Libraries
+#include <fstream>
+#include <iostream>
 #include <ncurses.h>
 #include <string>
 #include <vector>
@@ -35,9 +37,8 @@ void CameraCalibrationCallbackFunc( int   event,
         cal_config->pixels.push_back(cv::Point2i( x, y));
         cal_config->turret_positions.push_back(cv::Point2i( tx, ty));
 
-        std::cout << "Found Point at (" << x << ", " << y << ")" << std::endl;
-        std::cout << "      Servo ( " << tx << ", " << ty << ")" << std::endl;
-        std::cin.get();
+        mvprintw( 12, 3, ("Pixel: " + std::to_string(x)  + ", " + std::to_string(y)).c_str());
+        mvprintw( 13, 3, ("Servo: " + std::to_string(tx) + ", " + std::to_string(ty)).c_str());
     }
     else if  ( event == cv::EVENT_RBUTTONDOWN )
     {
@@ -197,7 +198,19 @@ void Calibration_Mode( Options const&            options,
         
         // Solve the Transforms
         Solve_Camera_Calibration( *cal_config );
+        
+        // Iterate over files
+        std::ofstream fout;
+        fout.open("data/point-match.txt");
 
+        for( size_t i=0; i<cal_config->pixels.size(); i++ ){
+            fout << cal_config->pixels[i].x << " " << cal_config->pixels[i].y;
+            fout << " " << cal_config->turret_positions[i].x << " " << cal_config->turret_positions[i].y << std::endl;
+        }
+
+        fout.close();
+
+        
         // Close the Cal Config
         cal_config->turret_controller = nullptr;
         delete [] cal_config;
