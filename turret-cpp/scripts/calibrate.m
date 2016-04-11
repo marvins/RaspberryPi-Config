@@ -12,17 +12,27 @@ endfunction
 
 function P = Read_File( pathname )
 
-    a = textread( pathname, '%f' )
-    return a
+    P = textread( pathname, '%f' )
+
 endfunction
 
 
-%  For Reference Only
-% (161, 353) -> (340,176)
-% (101, 107) -> (352,222)
-% (320, 206) -> (314,202)
-% (634, 113) -> (266,222)
-% (623, 358) -> (268,172)
+%  Parse and read the file
+plist = Read_File( argv(){1} );
+
+%  Get the number of rows
+num_points = size(plist)(1)/4;
+
+cnt=1
+A = ones(num_points,3)
+for p = 1:8
+    A(p,1) = plist(cnt)
+    cnt += 1
+    A(p,2) = plist(cnt)
+    cnt += 1
+end
+
+A
 
 
 %
