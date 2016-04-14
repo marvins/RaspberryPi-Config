@@ -54,6 +54,10 @@ Options::Options( int argc, char* argv[] )
     // Target-Config
     m_target_config = std::make_shared<PiDef::Target_Config>( m_config_file_data["TARGET_HAAR_PATHNAME"] );
 
+    // Time Step
+    if( m_config_file_data.find("TIME_STEP_MS") != m_config_file_data.end() ){
+        m_time_step_ms = std::stoi(m_config_file_data["TIME_STEP_MS"]);
+    }
 }
 
 
@@ -80,6 +84,9 @@ void Options::Set_Defaults()
 {
     // Set Log Level
     m_log_level = "trace";
+
+    // Default the Time Step
+    m_time_step_ms = 100;
 
     // Default Configuration File
     m_config_file_path = "data/options.cfg";

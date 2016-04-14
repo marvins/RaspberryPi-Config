@@ -67,6 +67,14 @@ class Options
             return (*m_turret_config);
         }
 
+
+        /**
+         * @brief Get Time Step
+         */
+        inline int Get_Time_Step_ms()const{
+            return m_time_step_ms;
+        }
+
     private:
         
         /**
@@ -107,6 +115,9 @@ class Options
         
         /// Target-Configuration
         PiDef::Target_Config::ptr_t m_target_config;
+
+        /// Time Step in Milliseconds
+        int m_time_step_ms;
 
 }; // End of Options Class
 
