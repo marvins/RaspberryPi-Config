@@ -336,7 +336,7 @@ void Defend_Mode( Options const&             options,
         // Print the 
         cv::imshow( "Calibration Test", 
                     image );
-        ch = cv::waitKey(10);
+        ch = cv::waitKey( options.Get_Time_Step_ms());
 
 
         // Check the value
